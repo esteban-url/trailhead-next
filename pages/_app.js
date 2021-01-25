@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const MyApp = ({Component, pageProps}) => {
   return (
-    <NetlifyIdentityContext url={'https://todo-ccs24.netlify.app/'}>
+    <NetlifyIdentityContext url={'https://trailhead-next.netlify.app'}>
       <Component {...pageProps} />
     </NetlifyIdentityContext>
   );
