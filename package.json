@@ -5,11 +5,28 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "eslint --ignore-path .gitignore --ext .js, .",
+    "prettier": "prettier --ignore-path .gitignore --write \"**/*.+(js|json)\"",
+    "format": "npm run prettier -- --write",
+    "check-format": "npm run prettier -- --list-different",
+    "validate": "npm-run-all --parallel check-format lint build"
   },
   "dependencies": {
+    "eslint": "^7.18.0",
     "next": "10.0.5",
     "react": "17.0.1",
-    "react-dom": "17.0.1"
+    "react-dom": "17.0.1",
+    "react-netlify-identity-gotrue": "^0.3.3"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
+    "@netlify/plugin-nextjs": "^1.0.8",
+    "eslint-plugin-react": "^7.22.0",
+    "husky": "^4.3.8",
+    "lint-staged": "^10.5.3",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.2.1"
   }
 }
