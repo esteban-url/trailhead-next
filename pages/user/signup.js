@@ -5,7 +5,7 @@ import {useIdentityContext} from 'react-netlify-identity-gotrue';
 
 import Layout from 'components/layout';
 
-export default function Signup() {
+const Signup = () => {
   const identity = useIdentityContext();
   const [password, setPassword] = useState();
   const [email, setEmail] = useState();
@@ -59,4 +59,6 @@ export default function Signup() {
       </form>
     </Layout>
   );
-}
+};
+
+export default Signup;

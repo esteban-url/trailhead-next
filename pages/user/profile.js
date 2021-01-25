@@ -5,7 +5,7 @@ import {useIdentityContext} from 'react-netlify-identity-gotrue';
 import Layout from 'components/layout';
 import Private from 'components/Private';
 
-export default function Profile() {
+const Profile = () => {
   const identity = useIdentityContext();
   return (
     <Layout>
@@ -25,4 +25,5 @@ export default function Profile() {
       </Private>
     </Layout>
   );
-}
+};
+export default Profile;

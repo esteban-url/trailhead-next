@@ -32,5 +32,5 @@ const Layout = ({children}) => {
     </>
   );
 };
-Layout.propTypes = {children: PropTypes.element};
+Layout.propTypes = {children: PropTypes.arrayOf(PropTypes.element)};
 export default Layout;

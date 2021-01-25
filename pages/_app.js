@@ -10,7 +10,7 @@ const MyApp = ({Component, pageProps}) => {
   );
 };
 MyApp.propTypes = {
-  Component: PropTypes.element,
+  Component: PropTypes.any,
   pageProps: PropTypes.any,
 };
 export default MyApp;

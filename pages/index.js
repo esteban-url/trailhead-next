@@ -3,7 +3,7 @@ import Head from 'next/head';
 import Layout from 'components/layout';
 import useIdentityRedirects from 'hooks/useIdentityRedirects';
 
-export default function Home() {
+const Home = () => {
   useIdentityRedirects();
   return (
     <Layout>
@@ -13,4 +13,5 @@ export default function Home() {
       landing
     </Layout>
   );
-}
+};
+export default Home;

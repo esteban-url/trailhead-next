@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Layout from 'components/layout';
 import LoginForm from 'components/loginForm';
-export default function Login() {
+const Login = () => {
   return (
     <Layout>
       <Head>
@@ -11,4 +11,5 @@ export default function Login() {
       <LoginForm />
     </Layout>
   );
-}
+};
+export default Login;

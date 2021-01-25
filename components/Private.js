@@ -24,7 +24,7 @@ const Private = ({children, rolesAllowed}) => {
   );
 };
 Private.propTypes = {
-  children: PropTypes.element,
+  children: PropTypes.arrayOf(PropTypes.element),
   rolesAllowed: PropTypes.array,
 };
 export default Private;

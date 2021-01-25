@@ -5,7 +5,7 @@ import {useIdentityContext} from 'react-netlify-identity-gotrue';
 
 import Layout from 'components/layout';
 
-export default function ResetPassword() {
+const ResetPassword = () => {
   const identity = useIdentityContext();
   const [password, setPassword] = useState();
   const [passwordConfirmation, setPasswordConfirmation] = useState();
@@ -56,4 +56,5 @@ export default function ResetPassword() {
       </form>
     </Layout>
   );
-}
+};
+export default ResetPassword;

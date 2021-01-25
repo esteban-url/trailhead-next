@@ -2,8 +2,8 @@ import Link from 'next/link';
 import {useState} from 'react';
 import {useIdentityContext} from 'react-netlify-identity-gotrue';
 import {useRouter} from 'next/router';
-
-export default function LoginForm(callbackPath) {
+import PropTypes from 'prop-types';
+const LoginForm = ({callbackPath}) => {
   const router = useRouter();
   const identity = useIdentityContext();
   const [userEmail, setUserEmail] = useState();
@@ -40,4 +40,8 @@ export default function LoginForm(callbackPath) {
       <Link href="/user/signup">Sign up instead</Link>
     </form>
   );
-}
+};
+LoginForm.propTypes = {
+  callbackPath: PropTypes.string,
+};
+export default LoginForm;

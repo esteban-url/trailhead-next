@@ -2,7 +2,7 @@ import {useIdentityContext} from 'react-netlify-identity-gotrue';
 import {useEffect} from 'react';
 import {useRouter} from 'next/router';
 
-export default function useIdentityRedirects() {
+const useIdentityRedirects = () => {
   const router = useRouter();
   const identity = useIdentityContext();
 
@@ -23,4 +23,6 @@ export default function useIdentityRedirects() {
         break;
     }
   }, [identity.urlToken]);
-}
+};
+
+export default useIdentityRedirects;
