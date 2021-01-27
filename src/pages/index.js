@@ -10,7 +10,7 @@ const Home = () => {
       <Head>
         <title>Trailhead - home</title>
       </Head>
-      landing
+      <p>landing</p>
     </Layout>
   );
 };
