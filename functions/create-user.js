@@ -12,19 +12,31 @@ exports.handler = async (event, context) => {
   try {
     if (roles.some((role) => allowedRoles.includes(role))) {
       return fetch(usersUrl, {
-        method: 'GET',
+        method: 'POST',
         headers: {Authorization: adminAuthHeader},
+        body: JSON.stringify({...JSON.parse(event.body), confirm: true}),
       })
         .then((response) => {
           return response.json();
         })
         .then((data) => {
-          return {statusCode: 200, body: JSON.stringify(data)};
+          if (data.code) {
+            console.log(`Error ${data.code}: ${data.msg}`);
+
+            return {
+              statusCode: data.code,
+              body: JSON.stringify({error: data.msg}),
+            };
+          }
+          console.log('Created a user! 204!');
+          console.log(JSON.stringify({data}));
+          return {statusCode: 204};
         })
-        .catch((e) => {
+        .catch((error) => {
+          console.log(error);
           return {
             statusCode: 500,
-            body: 'Internal Server Error: ' + e,
+            body: 'Internal Server Error: ' + error,
           };
         });
     } else {

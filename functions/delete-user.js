@@ -4,27 +4,29 @@ const fetch = require('node-fetch');
 // eslint-disable-next-line no-undef
 exports.handler = async (event, context) => {
   const {identity, user} = context.clientContext;
+  const {id} = JSON.parse(event.body);
   const roles = user ? user.app_metadata.roles : false;
   const allowedRoles = ['admin'];
-  const usersUrl = `${identity.url}/admin/users`;
+  const userUrl = `${identity.url}/admin/users/{${id}}`;
   const adminAuthHeader = 'Bearer ' + identity.token;
 
   try {
     if (roles.some((role) => allowedRoles.includes(role))) {
-      return fetch(usersUrl, {
-        method: 'GET',
+      return fetch(userUrl, {
+        method: 'DELETE',
         headers: {Authorization: adminAuthHeader},
       })
         .then((response) => {
+          console.log(`Deleted a user: ${id}`);
           return response.json();
         })
-        .then((data) => {
-          return {statusCode: 200, body: JSON.stringify(data)};
+        .then(() => {
+          return {statusCode: 204};
         })
-        .catch((e) => {
+        .catch((error) => {
           return {
             statusCode: 500,
-            body: 'Internal Server Error: ' + e,
+            body: 'Internal Server Error: ' + error,
           };
         });
     } else {
