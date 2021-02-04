@@ -1,12 +1,14 @@
 import Head from 'next/head';
 import AdminLayout from 'components/adminLayout';
 import {useEffect, useState} from 'react';
+import PropTypes from 'prop-types';
 import {useIdentityContext} from 'react-netlify-identity-gotrue';
 
 const Users = () => {
   const identity = useIdentityContext();
   const [users, setUsers] = useState();
-
+  const [creatingUser, setCreatingUser] = useState(false);
+  const toggleCreatingUser = () => setCreatingUser(!creatingUser);
   useEffect(() => {
     if (identity.user) {
       identity
@@ -19,12 +21,66 @@ const Users = () => {
         });
     }
   }, [identity]);
+
+  const handleDelete = (id) => {
+    identity
+      .authorizedFetch('/api/delete-user', {
+        method: 'POST',
+        body: JSON.stringify({id}),
+      })
+      .then((response) => {
+        if (response.ok) {
+          setUsers((users) => users.filter((x) => x.id !== id));
+        } else {
+          console.log(response);
+        }
+      });
+  };
+
+  return (
+    <AdminLayout>
+      <>
+        <Head>
+          <title>Users | Admin - Trailhead</title>
+        </Head>
+        <h2>Users</h2>
+
+        {creatingUser ? (
+          <CreateUser
+            addUserHandler={setUsers}
+            closeHandler={toggleCreatingUser}
+          />
+        ) : (
+          <>
+            <button type="button" onClick={toggleCreatingUser}>
+              Create new user
+            </button>
+            <ul>
+              {users?.map((user) => (
+                <li key={user.email}>
+                  {user.email}{' '}
+                  {identity.user.id !== user.id ? (
+                    <button type="button" onClick={() => handleDelete(user.id)}>
+                      delete
+                    </button>
+                  ) : null}
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+      </>
+    </AdminLayout>
+  );
+};
+
+const CreateUser = ({closeHandler, addUserHandler}) => {
+  const identity = useIdentityContext();
   const [password, setPassword] = useState();
   const [email, setEmail] = useState();
   const [fullName, setFullName] = useState();
   const [formMessage, setFormMessage] = useState();
   const [formError, setFormError] = useState();
-
   const submitHandler = async (event) => {
     event.preventDefault();
     setFormMessage();
@@ -40,69 +96,51 @@ const Users = () => {
         body: JSON.stringify(newUser),
       })
       .then((response) => {
-        return response.json();
-      })
-      .then((response) => {
-        if (response.statusCode === 204) {
-          setUsers((users) => [...users, newUser]);
+        if (response.ok) {
+          addUserHandler((users) => [newUser, ...users]);
+          closeHandler();
         } else {
-          setFormError(response.error);
+          return response.json();
         }
-      });
-  };
-
-  const handleDelete = (id) => {
-    identity
-      .authorizedFetch('/api/delete-user', {
-        method: 'POST',
-        body: JSON.stringify({id}),
       })
       .then((response) => {
-        setUsers((users) => users.filter((x) => x.id !== id));
-        console.log(response);
+        setFormError(response.error);
+      })
+      .catch((error) => {
+        console.log(error);
+        setFormError('oh no :(');
       });
   };
-
   return (
-    <AdminLayout>
-      <>
-        <Head>
-          <title>Users | Admin - Trailhead</title>
-        </Head>
-        <h2>Users</h2>
-        {users?.map((user) => (
-          <li key={user.email}>
-            {user.email}{' '}
-            {identity.user.id !== user.id ? (
-              <button type="button" onClick={() => handleDelete(user.id)}>
-                delete
-              </button>
-            ) : null}
-          </li>
-        ))}
-
-        <form onSubmit={submitHandler}>
-          <input
-            onChange={(event) => setFullName(event.currentTarget.value)}
-            type="text"
-          />
-          <br />
-          <input
-            onChange={(event) => setEmail(event.currentTarget.value)}
-            type="text"
-          />
-          <br />
-          <input
-            onChange={(event) => setPassword(event.currentTarget.value)}
-            type="password"
-          />
-          <br />
-          <div style={{color: 'blue'}}>{formMessage}</div>
-          <div style={{color: 'red'}}>{formError}</div>
-          <button type="submit">Create user</button>
-        </form>
-      </>
-    </AdminLayout>
+    <form onSubmit={submitHandler}>
+      <div>
+        <button type="button" onClick={closeHandler}>
+          Cancel
+        </button>
+      </div>
+      <input
+        onChange={(event) => setFullName(event.currentTarget.value)}
+        type="text"
+      />
+      <br />
+      <input
+        onChange={(event) => setEmail(event.currentTarget.value)}
+        type="text"
+      />
+      <br />
+      <input
+        onChange={(event) => setPassword(event.currentTarget.value)}
+        type="password"
+      />
+      <br />
+      <div style={{color: 'blue'}}>{formMessage}</div>
+      <div style={{color: 'red'}}>{formError}</div>
+      <button type="submit">Create user</button>
+    </form>
   );
+};
+CreateUser.propTypes = {
+  closeHandler: PropTypes.func.isRequired,
+  addUserHandler: PropTypes.func,
 };
 export default Users;

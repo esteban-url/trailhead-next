@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import Layout from 'components/layout';
-import LoginForm from 'components/loginForm';
+import LoginForm from 'components/user/loginForm';
 const Login = () => {
   return (
     <Layout>

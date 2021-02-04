@@ -1,6 +1,6 @@
 import {useIdentityContext} from 'react-netlify-identity-gotrue';
 import {useRouter} from 'next/router';
-import LoginForm from './loginForm';
+import LoginForm from './user/loginForm';
 import PropTypes from 'prop-types';
 
 const Private = ({children, rolesAllowed}) => {

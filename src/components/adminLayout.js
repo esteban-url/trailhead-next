@@ -32,5 +32,5 @@ const AdminLayout = ({children}) => {
     </>
   );
 };
-AdminLayout.propTypes = {children: PropTypes.arrayOf(PropTypes.element)};
+AdminLayout.propTypes = {children: PropTypes.element};
 export default AdminLayout;
