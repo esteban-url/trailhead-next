@@ -104,7 +104,9 @@ const CreateUser = ({closeHandler, addUserHandler}) => {
         }
       })
       .then((response) => {
-        setFormError(response.error);
+        if (response?.error) {
+          setFormError(response.error);
+        }
       })
       .catch((error) => {
         console.info(error);
