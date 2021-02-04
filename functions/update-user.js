@@ -20,12 +20,12 @@ exports.handler = async (event, context) => {
           return response.json();
         })
         .then((data) => {
-          console.log('Created a user! 204!');
-          console.log(JSON.stringify({data}));
+          console.info('Created a user! 204!');
+          console.info(JSON.stringify({data}));
           return {statusCode: 204};
         })
         .catch((error) => {
-          console.log(error);
+          console.info(error);
           return {
             statusCode: 500,
             body: 'Internal Server Error: ' + error,
@@ -35,7 +35,7 @@ exports.handler = async (event, context) => {
       return {statusCode: 401};
     }
   } catch (error) {
-    console.log(error);
+    console.info(error);
     return error;
   }
 };

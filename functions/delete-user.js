@@ -17,7 +17,7 @@ exports.handler = async (event, context) => {
         headers: {Authorization: adminAuthHeader},
       })
         .then((response) => {
-          console.log(`Deleted a user: ${id}`);
+          console.info(`Deleted a user: ${id}`);
           return response.json();
         })
         .then(() => {
@@ -33,7 +33,7 @@ exports.handler = async (event, context) => {
       return {statusCode: 401};
     }
   } catch (error) {
-    console.log(error);
+    console.info(error);
     return error;
   }
 };

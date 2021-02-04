@@ -32,7 +32,7 @@ const Users = () => {
         if (response.ok) {
           setUsers((users) => users.filter((x) => x.id !== id));
         } else {
-          console.log(response);
+          console.info(response);
         }
       });
   };
@@ -107,7 +107,7 @@ const CreateUser = ({closeHandler, addUserHandler}) => {
         setFormError(response.error);
       })
       .catch((error) => {
-        console.log(error);
+        console.info(error);
         setFormError('oh no :(');
       });
   };
