@@ -4,11 +4,10 @@ const fetch = require('node-fetch');
 // eslint-disable-next-line no-undef
 exports.handler = async (event, context) => {
   const {identity, user} = context.clientContext;
-  const roles = user ? user.app_metadata.roles : false;
+  const roles = user.app_metadata?.roles || [];
   const allowedRoles = ['admin'];
   const usersUrl = `${identity.url}/admin/users`;
   const adminAuthHeader = 'Bearer ' + identity.token;
-
   try {
     if (roles.some((role) => allowedRoles.includes(role))) {
       return fetch(usersUrl, {
@@ -19,6 +18,13 @@ exports.handler = async (event, context) => {
           return response.json();
         })
         .then((data) => {
+          if (data.code) {
+            console.info(`Error ${data.code}: ${data.msg}`);
+            return {
+              statusCode: data.code,
+              body: JSON.stringify({error: data.msg}),
+            };
+          }
           return {statusCode: 200, body: JSON.stringify(data)};
         })
         .catch((e) => {
@@ -32,6 +38,9 @@ exports.handler = async (event, context) => {
     }
   } catch (error) {
     console.info(error);
-    return error;
+    return {
+      statusCode: 500,
+      body: 'Internal Server Error: ' + error,
+    };
   }
 };
