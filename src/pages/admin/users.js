@@ -59,7 +59,12 @@ const Users = () => {
               {users?.map((user) => (
                 <li key={user.email}>
                   {user.email}{' '}
-                  {identity.user.id !== user.id ? (
+                  {user.app_metadata?.roles
+                    ? user.app_metadata.roles.map((role) => (
+                        <span key={role}>{role}</span>
+                      ))
+                    : null}
+                  {identity?.user?.id !== user.id ? (
                     <button type="button" onClick={() => handleDelete(user.id)}>
                       delete
                     </button>
