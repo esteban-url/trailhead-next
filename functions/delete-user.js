@@ -1,7 +1,5 @@
-// eslint-disable-next-line no-undef
 const fetch = require('node-fetch');
 
-// eslint-disable-next-line no-undef
 exports.handler = async (event, context) => {
   const {identity, user} = context.clientContext;
   const {id} = JSON.parse(event.body);
